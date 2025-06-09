@@ -3,7 +3,7 @@ import './Pay.css';
 import Data from './Data.jsx';
 import { useParams, useLocation } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
-
+import Header from './Navbar/Header.jsx';
 // Load Stripe publishable key
 const stripePromise = loadStripe('pk_test_51PxQjW056OrOiO33g3VCt1pVOaHc9GFlVEGv43n4MvAjGN1VyrBwhoihVElCojSGfKVuzYUdaoHpl9IPDUNJ2IKN0014BIx4tB'); // Replace with your key
 
@@ -112,20 +112,8 @@ function Pay() {
 
   return (
     <div>
-      <nav className="nav">
-        <div className="logo">Zee-Shirts</div>
-        <ul className={`nav-links ${isOpen ? 'active' : ''}`}>
-          <li><a href="/">Home</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Feedback</a></li>
-        </ul>
-        <div className="hamburger" onClick={toggleMenu}>
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
-        </div>
-      </nav>
-
+      
+<Header/>
       <div className="pay-container">
         <div className="pay-con">
           <div className="pay-img">

@@ -6,6 +6,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { FaCartShopping } from "react-icons/fa6";
 import {Link} from 'react-router-dom';
+import Header from './Navbar/Header.jsx';
 
 
 function App() {
@@ -15,29 +16,11 @@ function App() {
     AOS.init({ duration: 1000 ,once:true});
   }, []);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+ 
 
   return (
     <div>
-      <nav className="navbar">
-     <div className="logo"> Zee-Shirts</div> 
-        <ul className={`nav-links ${isOpen ? 'active' : ''}`}>
-     <li><a href="/">home</a></li>  
- <li><a href="mailto:sivalingamgokulakrishnan@gmail.com">contact</a></li>
- <li><a href="">feedback</a></li>
-        </ul>
-        <div className="cart"> <FaCartShopping/></div>
-        <div className="hamburger" onClick={toggleMenu}>
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
-          
-        </div>
-      
-        
-      </nav>
+     <Header/>
       <div className="container">
 
     

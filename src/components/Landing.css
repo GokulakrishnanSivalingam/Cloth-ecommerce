@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+* {
+  
+ 
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Hero Section */
+.landi-cont {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  padding: 4rem 2rem;
+  background: linear-gradient(to right, #f9f9f9, #ffe6e6);
+}
+
+.landi-cont-content {
+  flex: 1 1 400px;
+  padding: 1rem;
+}
+
+.landi-cont-subtitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  background: linear-gradient(90deg, #e63946, #f3722c, #f9c74f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 1px 1px 5px rgba(230, 57, 70, 0.6);
+  margin-bottom: 0.7rem;
+  animation: glowingText 3s ease-in-out infinite alternate;
+}
+
+@keyframes glowingText {
+  0% {
+    text-shadow: 1px 1px 5px rgba(230, 57, 70, 0.6);
+  }
+  50% {
+    text-shadow: 1px 1px 15px rgba(230, 57, 70, 1), 0 0 20px rgba(243, 114, 44, 0.7);
+  }
+  100% {
+    text-shadow: 1px 1px 5px rgba(230, 57, 70, 0.6);
+  }
+}
+
+
+.landi-cont-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.2;
+}
+
+.landi-cont-title span {
+  color: #e63946;
+}
+
+.landi-cont-desc {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 1rem 0 2rem;
+}
+
+.landi-cont-btn {
+  padding: 0.8rem 1.6rem;
+  background-color: #e63946;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s ease;
+  width: 350px;
+  align-items: center;
+}
+
+.landi-cont-btn:hover {
+  background-color: #d62828;
+}
+
+.landi-cont-img {
+  flex: 1  140px;
+  display: flex;
+  justify-content: center;
+  margin-top: 35px;
+
+}
+
+.landi-cont-img img {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Feature Section */
+.landi-feature {
+  padding: 3rem 2rem;
+  text-align: center;
+  background-color: #fff;
+}
+
+.landi-feature h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #222;
+}
+
+.landi-feature h2 span {
+  color: #e63946;
+}
+
+.landi-feature-grid {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.feature-card {
+  flex: 1 1 250px;
+  background: #fafafa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-card h3 {
+  color: #e63946;
+  margin-bottom: 0.5rem;
+}
+
+/* Categories Section */
+.landi-categories {
+  padding: 3rem 2rem;
+  background: linear-gradient(to right, #ffffff, #ffe2e2);
+  text-align: center;
+}
+
+.landi-categories h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.landi-categories h2 span {
+  color: #e63946;
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.cat-card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+  width: 220px;
+}
+
+.cat-card:hover {
+  transform: scale(1.05);
+}
+
+.cat-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.cat-card h4 {
+  font-size: 1.1rem;
+  color: #444;
+}
+
+/* CTA Section */
+.landi-cta {
+  padding: 3rem 2rem;
+  text-align: center;
+  background-color: #e63946;
+  color: #fff;
+}
+
+.landi-cta h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.landi-cta p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.landi-cta .landi-cont-btn {
+  background-color: #fff;
+  color: #e63946;
+  border: 2px solid #fff;
+}
+
+.landi-cta .landi-cont-btn:hover {
+  background-color: transparent;
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .landi-cont {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  .landi-cont-content,
+  .landi-cont-img {
+    flex: 1 1 100%;
+    margin-top: 20px;
+  }
+
+
+
+  .landi-cont-title {
+    font-size: 2.2rem;
+  }
+  .category-grid
+  {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+  .feature-card {
+    padding: 1rem;
+    min-height: auto;
+    background-color: rgb(245, 231, 231);
+  }
+
+  .feature-card h3 {
+    font-size: 1.1rem;
+  }
+
+  
+  
+}

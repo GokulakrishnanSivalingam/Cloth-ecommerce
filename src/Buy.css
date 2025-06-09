@@ -241,6 +241,7 @@ button.selected {
 
 .maincon {
     display: flex;
+    margin-top: 60px;
 }
 
 .con1 {

@@ -3,6 +3,7 @@ import './Buy.css';
 import Data from './Data.jsx';
 import { HiOutlinePlusSm } from "react-icons/hi";
 import { useParams, useNavigate } from 'react-router-dom';
+import Header from './Navbar/Header.jsx';
 
 function Buy() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,9 +17,7 @@ function Buy() {
   const shirt = Data.find(shirt => shirt.id === parseInt(id));
   const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+ 
 
   useEffect(() => {
     document.body.style.width = '95vw';
@@ -46,19 +45,7 @@ function Buy() {
 
   return (
     <div>
-      <nav className="nav">
-        <div className="logo"> Zee-Shirts</div> 
-        <ul className={`nav-links ${isOpen ? 'active' : ''}`}>
-          <li><a href="/">home</a></li>  
-          <li><a href="#">contact</a></li>
-          <li><a href="#">feedback</a></li>
-        </ul>
-        <div className="hamburger" onClick={toggleMenu}>
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
-        </div>
-      </nav>
+     <Header/>
       <div className="maincon">
 <div className="con1">
       <div className="buy-con">

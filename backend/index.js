@@ -1,49 +1,45 @@
 const express = require('express');
-const Razorpay = require('razorpay');
-const crypto = require('crypto');
+const Stripe = require('stripe');
 const cors = require('cors');
 const dotenv = require('dotenv').config();
+
 const app = express();
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
-const razorpay = new Razorpay({
-    key_id: process.env.key_id,
-    key_secret: process.env.key_secret,
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+
+app.post('/create-checkout-session', async (req, res) => {
+  const { email, amount, productName } = req.body;
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'payment',
+      line_items: [
+        {
+          price_data: {
+            currency: 'inr',
+            product_data: {
+              name: productName || 'Product',
+            },
+            unit_amount: amount, // amount in paise (e.g., 5000 for ₹50)
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: 'http://localhost:3000/success',
+      cancel_url: 'http://localhost:3000/cancel',
+      customer_email: email,
+    });
+
+    res.json({ id: session.id });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to create checkout session' });
+  }
 });
 
-
-app.post('/create-order', async(req, res) => {
-    const amount = req.body.amount;
-    const options = {
-        amount: amount,
-        currency: 'INR',
-        receipt: `receipt_order_${Math.random().toString(36).substring(7)}`,
-    };
-
-    try {
-        const order = await razorpay.orders.create(options);
-        res.status(200).json(order);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to create order' });
-    }
+app.listen(5000, () => {
+  console.log('Server running on port 5000');
 });
-
-// Payment verification route (this is your provided code)
-app.post('/verify-payment', (req, res) => {
-    const secret = 'hhaPmwqXCRIPEKGdhaP12bpA';
-
-    const shasum = crypto.createHmac('sha256', secret);
-    shasum.update(req.body.razorpay_order_id + "|" + req.body.razorpay_payment_id);
-    const digest = shasum.digest('hex');
-
-    if (digest === req.body.razorpay_signature) {
-        // Payment verified successfully
-        res.status(200).json({ status: 'Payment verified successfully' });
-    } else {
-        // Payment verification failed
-        res.status(400).json({ status: 'Payment verification failed' });
-    }
-});
-
-app.listen(5000, () => console.log('Server running on port 5000'));

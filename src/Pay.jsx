@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './Pay.css';
 import Data from './Data.jsx';
 import { useParams, useLocation } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
+
+// Load Stripe publishable key
+const stripePromise = loadStripe('pk_test_51PxQjW056OrOiO33g3VCt1pVOaHc9GFlVEGv43n4MvAjGN1VyrBwhoihVElCojSGfKVuzYUdaoHpl9IPDUNJ2IKN0014BIx4tB'); // Replace with your key
 
 function Pay() {
   const [isOpen, setIsOpen] = useState(false);
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [state, setState] = useState("");
   const [number, setNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -14,7 +18,7 @@ function Pay() {
   const [nameError, setNameError] = useState('');
   const [pin, setPin] = useState('');
   const [numberError, setNumberError] = useState("");
-  const location = useLocation(); 
+  const location = useLocation();
   const shirt = Data.find(shirt => shirt.id === parseInt(id));
   const { address, selectedColor, selectedSize } = location.state || {};
 
@@ -28,7 +32,7 @@ function Pay() {
       document.body.style.width = '';
     };
   }, []);
-  
+
   const validateForm = () => {
     let isValid = true;
 
@@ -66,57 +70,44 @@ function Pay() {
     return isValid;
   };
 
-  const loadScript = (src) => {
-    return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = src;
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    });
-  };
-
-  const displayRazorpay = async (e) => {
+  const handleStripePayment = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
-    const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js');
-    if (!res) {
-      alert('Payment failed, are you online?');
-      return;
+    try {
+      // Call backend to create Stripe Checkout session
+      const response = await fetch('http://localhost:5000/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          amount: shirt.price * 100, // in paise
+          productName: shirt.name,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!data.id) {
+        alert('Failed to create checkout session.');
+        return;
+      }
+
+      const stripe = await stripePromise;
+
+      // Redirect to Stripe Checkout with session ID from backend
+      const result = await stripe.redirectToCheckout({
+        sessionId: data.id,
+      });
+
+      if (result.error) {
+        alert(result.error.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Payment failed. Please try again.');
     }
-
-    const result = await fetch('https://cloth-ecom-site.onrender.com/create-order', {
-      method: 'POST',
-      body: JSON.stringify({ amount: shirt.price * 100 }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    const data = await result.json();
-    if (!data) {
-      alert('Server error. Are you online?');
-      return;
-    }
-
-    const options = {
-      key: process.env.key_id,
-      amount: data.amount,
-      currency: data.currency,
-      name: shirt.name,
-      description: 'Test Transaction',
-      order_id: data.id,
-      handler: function (response) {
-        alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
-        alert(`Order ID: ${response.razorpay_order_id}`);
-        alert(`Signature: ${response.razorpay_signature}`);
-      },
-      prefill: { name: `${state}`, email: `${email}`, contact: `${number}` },
-      theme: { color: '#3399cc' },
-    };
-
-    const rzp1 = new window.Razorpay(options);
-    rzp1.open();
   };
 
   return (
@@ -154,19 +145,40 @@ function Pay() {
         </div>
       </div>
 
-      <form onSubmit={displayRazorpay}>
+      <form onSubmit={handleStripePayment}>
         <center>
           <div className="address">
             <div className="add-con1">
-              <input type="text" placeholder="Enter your name" value={state} onChange={(e) => setState(e.target.value)} />
+              <input
+                type="text"
+                placeholder="Enter your name"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+              />
               <div className="error" align="left"><p>{nameError}</p></div>  
-              <input type="number" placeholder="Enter your number" value={number} onChange={(e) => setNumber(e.target.value)} />
+              <input
+                type="number"
+                placeholder="Enter your number"
+                value={number}
+                onChange={(e) => setNumber(e.target.value)}
+              />
               <div className="error" align="left"><p>{numberError}</p></div>
             </div>
             <div className="add-con2">
-              <input type="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
               <div className="error" align="left"><p>{emailError}</p></div>
-              <input type="text" placeholder="Enter your pincode (optional)" maxLength={6} value={pin} onChange={(e) => setPin(e.target.value)} />
+              <input
+                type="text"
+                placeholder="Enter your pincode (optional)"
+                maxLength={6}
+                value={pin}
+                onChange={(e) => setPin(e.target.value)}
+              />
               <div className="error" align="left"><p>{pinError}</p></div>
             </div>
           </div>

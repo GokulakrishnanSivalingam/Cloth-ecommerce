@@ -135,6 +135,7 @@
   color: #c82333;
 }
 
+
 @media (max-width: 768px) {
   .header {
     padding: 0 1rem;
@@ -238,3 +239,66 @@
     opacity: 1;
   }
 } 
+/* Search Box Styling */
+
+/* Desktop search bar */
+.header--search-desktop {
+  display: block;
+  margin-right: 1rem;
+}
+.header--search {
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+}
+
+/* Right-side icons (mobile) */
+.header--right-icons {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-right: 10px;
+}
+
+.header--search-toggle {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+}
+
+.header--search-box-mobile {
+  display: none;
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  .header--search-desktop {
+    display: none;
+  }
+
+  .header--right-icons {
+    display: flex;
+  }
+
+  .header--search-box-mobile {
+    display: block;
+    padding: 10px 20px;
+    background: white;
+    position: relative;
+    top: 60px;
+    z-index: 999;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  }
+
+  .header--search {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+}

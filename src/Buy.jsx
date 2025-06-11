@@ -137,7 +137,33 @@ function Buy() {
         <button type="submit" disabled={!selectedColor || !selectedSize} onClick={validateAndNavigate}>
           Buy
         </button>
-        <button>Add to Cart</button>
+       <button
+  onClick={() => {
+    if (!selectedColor || !selectedSize || !address) {
+      setError('Please fill all the fields before adding to cart');
+      return;
+    }
+
+    const cartItem = {
+      id: shirt.id,
+      name: shirt.name,
+      price: shirt.price,
+      image: shirt.image,
+      color: selectedColor,
+      size: selectedSize,
+      address: address,
+    };
+
+    const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+    existingCart.push(cartItem);
+    localStorage.setItem('cart', JSON.stringify(existingCart));
+
+    alert(`${shirt.name} added to cart!`);
+  }}
+>
+  Add to Cart
+</button>
+
         </div>
       </div>
       </div>

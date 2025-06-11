@@ -1,41 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { FaStar } from "react-icons/fa";
-import Data from './Data.jsx'
+import Data from './Data.jsx';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { FaCartShopping } from "react-icons/fa6";
-import {Link} from 'react-router-dom';
-import Header from './Navbar/Header.jsx';
-
+import { Link } from 'react-router-dom';
+import Header from './Navbar/Header1.jsx';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(''); // ✅ Search state
 
   useEffect(() => {
-    AOS.init({ duration: 1000 ,once:true});
+    AOS.init({ duration: 1000, once: true });
   }, []);
 
- 
+  // ✅ Filter data based on search term
+  const filteredShirts = Data.filter(shirt =>
+    shirt.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
-     <Header/>
+      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      
       <div className="container">
-
-    
-   {Data.map((shirt) => (
-            <div key={shirt.id}className='shirt-con' data-aos="fade-up">
-            <Link key={shirt.id} to={`/buy/${shirt.id}`}><img src={shirt.image} alt={shirt.name} /></Link>
+        {filteredShirts.length > 0 ? (
+          filteredShirts.map((shirt) => (
+            <div key={shirt.id} className='shirt-con' data-aos="fade-up" id="shirt">
+              <Link to={`/buy/${shirt.id}`}><img src={shirt.image} alt={shirt.name} /></Link>
               <p>{shirt.name}</p>
-            
               <h3>&#8377;{shirt.price}</h3>
-                <span><FaStar/> {shirt.rating}</span>
+              <span><FaStar /> {shirt.rating}</span>
             </div>
-          ))}
- </div>
-   </div>
-  
+          ))
+        ) : (
+          <p style={{ textAlign: 'center', marginTop: '2rem' }}>No products found</p>
+        )}
+      </div>
+    </div>
   );
 }
 
